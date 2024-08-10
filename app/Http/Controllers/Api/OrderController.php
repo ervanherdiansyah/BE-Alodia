@@ -42,15 +42,15 @@ class OrderController extends Controller
     public function getAllOrderByUser()
     {
         try {
-            $orders = Order::with('userAlamat','orderDetail.product', 'users', 'paket')->where('user_id', Auth::user()->id)->where('status', 'Paid')->latest()->paginate(10);
+            $orders = Order::with('userAlamat', 'orderDetail.product', 'users', 'paket')->where('user_id', Auth::user()->id)->where('status', 'Paid')->latest()->paginate(10);
 
             // Format ulang data pesanan
-        $formattedOrders = $orders->map(function ($order) {
-            $products = $order->orderDetail->map(function ($detail) {
-                return $detail->product->product_name . ' ' . $detail->quantity;
-            })->implode(', ');
+            $formattedOrders = $orders->map(function ($order) {
+                $products = $order->orderDetail->map(function ($detail) {
+                    return $detail->product->product_name . ' ' . $detail->quantity;
+                })->implode(', ');
 
-            return [
+                return [
                     'id' => $order->id,
                     'created_at' => $order->created_at,
                     'updated_at' => $order->updated_at,
@@ -60,6 +60,7 @@ class OrderController extends Controller
                     'order_date' => $order->order_date,
                     'status' => $order->status,
                     'shipping_status' => $order->shipping_status,
+                    'shipping_service' => $order->shipping_service,
                     'shipping_courier' => $order->shipping_courier,
                     'total_harga' => $order->total_harga,
                     'total_belanja' => $order->total_belanja,
@@ -80,9 +81,9 @@ class OrderController extends Controller
                     'user_alamat' => $order->userAlamat,
                     'alamat_pengiriman_paket' => $order->alamatPengiriman,
                 ];
-        });
+            });
 
-        return response()->json(['data' => $formattedOrders, 'status' => 'Success'], 200);
+            return response()->json(['data' => $formattedOrders, 'status' => 'Success'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -134,7 +135,7 @@ class OrderController extends Controller
 
             // Buat order baru
             // Buat order baru
-            if($paket->is_discount == true){
+            if ($paket->is_discount == true) {
                 $order = new Order();
                 $order->user_id = Auth::user()->id;
                 $order->paket_id = $request->paketId;
@@ -143,8 +144,7 @@ class OrderController extends Controller
                 $order->status = 'Pending';
                 $order->total_harga = $paket->discount_price;
                 $order->save();
-            }
-            else{
+            } else {
                 $order = new Order();
                 $order->user_id = Auth::user()->id;
                 $order->paket_id = $request->paketId;
@@ -152,7 +152,7 @@ class OrderController extends Controller
                 $order->order_date = now();
                 $order->status = 'Pending';
                 $order->total_harga = $paket->price;
-                $order->save(); 
+                $order->save();
             }
 
             // Buat detail order untuk setiap produk
@@ -167,7 +167,7 @@ class OrderController extends Controller
                     DB::rollback();
                     return response()->json(['message' => 'Requested quantity exceeds available stock'], 400);
                 }
-        
+
 
                 // Cek apakah jumlah produk yang diminta lebih dari max quantity
                 if ($totalQuantity > $maxQuantity) {
@@ -227,15 +227,15 @@ class OrderController extends Controller
             $orders = Order::join('users', 'orders.user_id', '=', 'users.id')
                 ->join('user_details', 'users.id', '=', 'user_details.user_id')
                 ->where('user_details.referral_use', $referralCode->referral)
-                ->where('orders.status','Paid')
-                ->select('orders.user_id', DB::raw('SUM(orders.total_harga) as total_harga'),DB::raw('MAX(orders.created_at) as latest_order_date'))
+                ->where('orders.status', 'Paid')
+                ->select('orders.user_id', DB::raw('SUM(orders.total_harga) as total_harga'), DB::raw('MAX(orders.created_at) as latest_order_date'))
                 ->groupBy('orders.user_id')
                 ->with('users.userDetail')
                 ->orderBy('orders.created_at', 'desc')
                 ->get();
-                
-                // ->latest()
-                
+
+            // ->latest()
+
             return response()->json(['data' => $orders, 'message' => 'success'], 200);
         } catch (\Throwable $th) {
             //throw $th;
@@ -266,34 +266,34 @@ class OrderController extends Controller
             return response()->json(['message' => 'Internal Server Error'], 500);
         }
     }
-    
-    public function getOrderByUserID(){
-        try{
+
+    public function getOrderByUserID()
+    {
+        try {
             $user_id = Auth::user()->id;
             $user_orders = Order::with('paket', 'orderDetail', 'users')->where('user_id', $user_id)->get();
             $total_user_order = $user_orders->count();
             return response()->json(['data' => ['Total Orders' => $total_user_order, 'Detail Order' => $user_orders]], 200);
-        }
-        catch(\Throwable $th){
+        } catch (\Throwable $th) {
             return response()->json(['message' => 'Internal Server Error'], 500);
         }
-        
     }
-    
-    public function getOrderByUserID2(){
-        try{
+
+    public function getOrderByUserID2()
+    {
+        try {
             $user_id = Auth::user()->id;
             $user = User::where('id', $user_id)->first();
             // order diri sendiri
 
-            $user_orders = Order::where('user_id', $user_id)->get(); 
+            $user_orders = Order::where('user_id', $user_id)->get();
             $data_order_user = [];
-            foreach($user_orders as $order){
+            foreach ($user_orders as $order) {
                 $keterangan = [
-                    'nama_user'=>$order->users->name,
-                    'nama_paket'=>$order->paket->paket_nama,
-                    'tanggal'=> $order->created_at,
-                    'keterangan'=>'Transaksi Produk'
+                    'nama_user' => $order->users->name,
+                    'nama_paket' => $order->paket->paket_nama,
+                    'tanggal' => $order->created_at,
+                    'keterangan' => 'Transaksi Produk'
                 ];
                 $data_order_user[] = $keterangan;
             }
@@ -306,44 +306,42 @@ class OrderController extends Controller
             // ->where('user_details.referral_use', $user->referral)
             // ->where('orders.status', 'Paid')
             // ->get();
-            
+
             $order_afiliasi = Order::join('users', 'orders.user_id', '=', 'users.id')
-            ->join('user_details', 'users.id', '=', 'user_details.user_id')
-            ->join('pakets', 'orders.paket_id', '=', 'pakets.id')
-            ->where('user_details.referral_use', $user->referral)
-            ->where('orders.status', 'Paid')
-            ->latest()
-            ->select('orders.*', 'users.name as user_name', 'pakets.paket_nama as paket_name')
-            ->get();
-            
+                ->join('user_details', 'users.id', '=', 'user_details.user_id')
+                ->join('pakets', 'orders.paket_id', '=', 'pakets.id')
+                ->where('user_details.referral_use', $user->referral)
+                ->where('orders.status', 'Paid')
+                ->latest()
+                ->select('orders.*', 'users.name as user_name', 'pakets.paket_nama as paket_name')
+                ->get();
+
             // return response()->json(['user_order' => $order_afiliasi], 200);
 
             $data_order_afiliasi = [];
-            foreach($order_afiliasi as $order){
+            foreach ($order_afiliasi as $order) {
                 $keterangan = [
-                    'nama_afiliasi'=>$order->users->name,
-                    'nama_paket'=>$order->paket->paket_nama,
-                    'tanggal'=> $order->created_at,
-                    'keterangan'=>'Repeat Order Afiliasi'
+                    'nama_afiliasi' => $order->users->name,
+                    'nama_paket' => $order->paket->paket_nama,
+                    'tanggal' => $order->created_at,
+                    'keterangan' => 'Repeat Order Afiliasi'
                 ];
                 $data_order_afiliasi[] = $keterangan;
             }
-            
+
             usort($data_order_user, function ($a, $b) {
-            return strtotime($b['tanggal']) - strtotime($a['tanggal']);
+                return strtotime($b['tanggal']) - strtotime($a['tanggal']);
             });
 
             usort($data_order_afiliasi, function ($a, $b) {
-            return strtotime($b['tanggal']) - strtotime($a['tanggal']);
+                return strtotime($b['tanggal']) - strtotime($a['tanggal']);
             });
-            
+
             // get table order by user affiliate code.
             $total_user_order = $user_orders->count() + $order_afiliasi->count();
-            return response()->json(['user_order' => $data_order_user, 'order_afilliate'=>$data_order_afiliasi, 'Total_order' => $total_user_order], 200);
-        }
-        catch(\Throwable $th){
+            return response()->json(['user_order' => $data_order_user, 'order_afilliate' => $data_order_afiliasi, 'Total_order' => $total_user_order], 200);
+        } catch (\Throwable $th) {
             return response()->json(['message' => $th->getMessage()], 500);
         }
     }
-    
 }

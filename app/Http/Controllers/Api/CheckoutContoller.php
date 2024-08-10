@@ -33,6 +33,7 @@ class CheckoutContoller extends Controller
                     $price = $orders->paket->discount_price;
                     $orders->update([
                         'shipping_courier' => $request->shipping_courier,
+                        'shipping_service' => $request->shipping_service,
                         'shipping_status' => "Diproses",
                         'estimasi_tiba' => $request->estimasi,
                         'alamat_id' => $request->alamat_id,
@@ -46,6 +47,7 @@ class CheckoutContoller extends Controller
                     $price = $orders->paket->price;
                     $orders->update([
                         'shipping_courier' => $request->shipping_courier,
+                        'shipping_service' => $request->shipping_service,
                         'shipping_status' => "Diproses",
                         'estimasi_tiba' => $request->estimasi,
                         'alamat_id' => $request->alamat_id,
@@ -57,7 +59,7 @@ class CheckoutContoller extends Controller
                 }
 
                 $item_details = [];
-                
+
                 $item_details[] = [
                     'id' => $orders->order_code,
                     'price' => $price,
@@ -84,7 +86,7 @@ class CheckoutContoller extends Controller
 
                 // \Midtrans\Config::$overrideNotifUrl = config('app.url') . '/api/callback';
                 \Midtrans\Config::$overrideNotifUrl = 'https://backend.fastnetwork.id/api/callback';
-                
+
                 $order_id = $orders->id;
                 $random_string = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
                 $order_id_with_random = $order_id . $random_string;
@@ -108,7 +110,7 @@ class CheckoutContoller extends Controller
                         "echannel",
                     ),
                     'item_details' => $item_details,
-                    
+
 
                 );
                 // return response()->json($params['transaction_details']['gross_amount']);
@@ -162,10 +164,10 @@ class CheckoutContoller extends Controller
 
                 // \Midtrans\Config::$overrideNotifUrl = config('app.url') . '/api/callback';
                 \Midtrans\Config::$overrideNotifUrl = 'https://backend.fastnetwork.id/api/callback';
-                
+
                 // Check transaction status
                 // $status = \Midtrans\Transaction::status($orders->id);
-        
+
                 // If transaction is pending, cancel it
                 // if ($status->transaction_status == 'pending') {
                 //     \Midtrans\Transaction::cancel($orders->id);
