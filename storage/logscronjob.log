@@ -1,0 +1,99 @@
+
+   INFO  Seeding database.  
+
+
+   Error 
+
+  Class "App\Console\Log" not found
+
+  at backend_fast_network/app/Console/Kernel.php:18
+     14▕     {
+     15▕         // $schedule->command('inspire')->hourly();
+     16▕         $schedule->command('user-wallets')->everyMinute();
+     17▕         $schedule->command('check:user-wallets')->everyMinute()->withoutOverlapping();
+  ➜  18▕         Log::info('Scheduled command check:user-wallets set to run every minute.');
+     19▕ 
+     20▕     }
+     21▕ 
+     22▕     /**
+
+      [2m+22 vendor frames [22m
+
+  23  backend_fast_network/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "App\Console\Log" not found
+
+  at backend_fast_network/app/Console/Kernel.php:18
+     14▕     {
+     15▕         // $schedule->command('inspire')->hourly();
+     16▕         $schedule->command('user-wallets')->everyMinute();
+     17▕         $schedule->command('check:user-wallets')->everyMinute()->withoutOverlapping();
+  ➜  18▕         Log::info('Scheduled command check:user-wallets set to run every minute.');
+     19▕ 
+     20▕     }
+     21▕ 
+     22▕     /**
+
+      [2m+22 vendor frames [22m
+
+  23  backend_fast_network/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+  2024-05-19 12:30:02 Running ['artisan' user-wallets] .............. 6ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' user-wallets > '/dev/null' 2>&1  
+  2024-05-19 12:30:02 Running ['artisan' check:user-wallets] ........ 1ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' check:user-wallets > '/dev/null' 2>&1  
+
+
+  2024-05-19 12:31:01 Running ['artisan' user-wallets] .............. 6ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' user-wallets > '/dev/null' 2>&1  
+  2024-05-19 12:31:01 Running ['artisan' check:user-wallets] ........ 1ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' check:user-wallets > '/dev/null' 2>&1  
+
+
+  2024-05-19 12:32:01 Running ['artisan' user-wallets] .............. 6ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' user-wallets > '/dev/null' 2>&1  
+  2024-05-19 12:32:01 Running ['artisan' check:user-wallets] ........ 1ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' check:user-wallets > '/dev/null' 2>&1  
+
+
+  2024-05-19 12:33:01 Running ['artisan' user-wallets] .............. 6ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' user-wallets > '/dev/null' 2>&1  
+  2024-05-19 12:33:01 Running ['artisan' check:user-wallets] ........ 1ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' check:user-wallets > '/dev/null' 2>&1  
+
+
+  2024-05-19 12:34:01 Running ['artisan' user-wallets] .............. 7ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' user-wallets > '/dev/null' 2>&1  
+  2024-05-19 12:34:01 Running ['artisan' check:user-wallets] ........ 1ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' check:user-wallets > '/dev/null' 2>&1  
+
+
+  2024-05-19 12:35:02 Running ['artisan' user-wallets] ............. 10ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' user-wallets > '/dev/null' 2>&1  
+  2024-05-19 12:35:02 Running ['artisan' check:user-wallets] ........ 1ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' check:user-wallets > '/dev/null' 2>&1  
+
+
+  2024-05-19 12:36:01 Running ['artisan' user-wallets] .............. 6ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' user-wallets > '/dev/null' 2>&1  
+  2024-05-19 12:36:01 Running ['artisan' check:user-wallets] ........ 1ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' check:user-wallets > '/dev/null' 2>&1  
+
+
+  2024-05-19 12:37:02 Running ['artisan' user-wallets] .............. 6ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' user-wallets > '/dev/null' 2>&1  
+  2024-05-19 12:37:02 Running ['artisan' check:user-wallets] ........ 1ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' check:user-wallets > '/dev/null' 2>&1  
+
+
+  2024-05-19 12:38:02 Running ['artisan' user-wallets] .............. 9ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' user-wallets > '/dev/null' 2>&1  
+  2024-05-19 12:38:02 Running ['artisan' check:user-wallets] ........ 1ms DONE
+  ⇂ '/opt/alt/php82/usr/bin/php' 'artisan' check:user-wallets > '/dev/null' 2>&1  
+

@@ -1,0 +1,5 @@
+[22-May-2024 08:54:10 UTC] PHP Fatal error:  Cannot declare class App\Models\UserKomisiHistory, because the name is already in use in /home/fasz8663/backend_fast_network/app/Http/Controllers/Api/UserKomisiHistory.php on line 8
+[22-May-2024 08:58:05 UTC] PHP Fatal error:  Cannot declare class App\Models\UserKomisiHistoryController, because the name is already in use in /home/fasz8663/backend_fast_network/app/Http/Controllers/Api/UserKomisiHistoryController.php on line 8
+[29-May-2024 14:49:26 Asia/Jakarta] PHP Fatal error:  Cannot use try without catch or finally in /home/fasz8663/backend_fast_network/app/Http/Controllers/Api/OrderController.php on line 257
+[29-May-2024 14:49:26 Asia/Jakarta] PHP Fatal error:  Cannot use try without catch or finally in /home/fasz8663/backend_fast_network/app/Http/Controllers/Api/OrderController.php on line 257
+[29-May-2024 14:50:21 Asia/Jakarta] PHP Fatal error:  Cannot use try without catch or finally in /home/fasz8663/backend_fast_network/app/Http/Controllers/Api/OrderController.php on line 257
