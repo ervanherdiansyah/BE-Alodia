@@ -19,7 +19,7 @@ class RajaOngkirController extends Controller
     {
         try {
             $userAlamat = UserAlamat::where('user_id', Auth::user()->id)->where('alamat_utama', true)->first();
-            $data = $userAlamat->kota->type;
+            $data = $userAlamat->kecamatan_id;
             // return response()->json($data);
             $userOrder = Order::with('orderDetail.product', 'users', 'paket')->where('user_id', Auth::user()->id)->where('status', 'Pending')->latest()->first();
             $kurirList = Courier::get();
@@ -34,7 +34,7 @@ class RajaOngkirController extends Controller
                     ])->post(env('RAJAONGKIR_BASE_URL') . 'cost', [
                         'origin' => env('RAJAONGKIR_ORIGIN'),
                         'originType' => env('RAJAONGKIR_ORIGIN_TYPE'),
-                        'destination' => $userAlamat->kota_id,
+                        'destination' => $userAlamat->kecamatan_id,
                         'destinationType' => 'subdistrict',
                         'weight' => $userOrder->paket->weight,
                         'courier' => $kurir->code,
@@ -43,7 +43,7 @@ class RajaOngkirController extends Controller
                     // $shippingFees[] = json_decode($response->getBody(), true);
                     // $shippingFees[$kurir->name] = $result['rajaongkir']['results'];
                     $result = json_decode($response->getBody(), true);
-                    return response()->json($result);
+                    // return response()->json($result);
 
 
                     if (isset($result['rajaongkir']['results'][0])) {
