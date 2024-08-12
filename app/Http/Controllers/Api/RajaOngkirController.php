@@ -19,6 +19,8 @@ class RajaOngkirController extends Controller
     {
         try {
             $userAlamat = UserAlamat::where('user_id', Auth::user()->id)->where('alamat_utama', true)->first();
+            $data = $userAlamat->kota->type;
+            // return response()->json($data);
             $userOrder = Order::with('orderDetail.product', 'users', 'paket')->where('user_id', Auth::user()->id)->where('status', 'Pending')->latest()->first();
             $kurirList = Courier::get();
             // return response()->json($kurirList);
@@ -31,14 +33,18 @@ class RajaOngkirController extends Controller
                         'key' => env('RAJAONGKIR_APIKEY'),
                     ])->post(env('RAJAONGKIR_BASE_URL') . 'cost', [
                         'origin' => env('RAJAONGKIR_ORIGIN'),
+                        'originType' => env('RAJAONGKIR_ORIGIN_TYPE'),
                         'destination' => $userAlamat->kota_id,
+                        'destinationType' => 'subdistrict',
                         'weight' => $userOrder->paket->weight,
-                        'courier' => $kurir->code,  // Menggunakan code kurir dari tabel kurir
+                        'courier' => $kurir->code,
                     ]);
 
                     // $shippingFees[] = json_decode($response->getBody(), true);
                     // $shippingFees[$kurir->name] = $result['rajaongkir']['results'];
                     $result = json_decode($response->getBody(), true);
+                    return response()->json($result);
+
 
                     if (isset($result['rajaongkir']['results'][0])) {
                         $shippingFees[] = [
@@ -53,21 +59,21 @@ class RajaOngkirController extends Controller
                     return response()->json(['message' =>  $e->getMessage()], 500);
                 }
             }
-        //     $shippingFees = [];
-        //     try {
-        //         $response = Http::withHeaders([
-        //             'key' => env('RAJAONGKIR_APIKEY'),
-        //         ])->post(env('RAJAONGKIR_BASE_URL') . 'cost', [
-        //             'origin' => env('RAJAONGKIR_ORIGIN'),
-        //             'destination' => $userAlamat->kota_id,
-        //             'weight' => $userOrder->paket->weight,
-        //             'courier' => $request->code_courier,
-        //         ]);
+            //     $shippingFees = [];
+            //     try {
+            //         $response = Http::withHeaders([
+            //             'key' => env('RAJAONGKIR_APIKEY'),
+            //         ])->post(env('RAJAONGKIR_BASE_URL') . 'cost', [
+            //             'origin' => env('RAJAONGKIR_ORIGIN'),
+            //             'destination' => $userAlamat->kota_id,
+            //             'weight' => $userOrder->paket->weight,
+            //             'courier' => $request->code_courier,
+            //         ]);
 
-        //         $shippingFees = json_decode($response->getBody(), true);
-        //     } catch (\Exception $e) {
-        //         return response()->json(['message' => 'Internal Server Error'], 500);
-        //     }
+            //         $shippingFees = json_decode($response->getBody(), true);
+            //     } catch (\Exception $e) {
+            //         return response()->json(['message' => 'Internal Server Error'], 500);
+            //     }
             return response()->json(['data' => $shippingFees, 'status' => 'Success'], 200);
         } catch (\Throwable $th) {
             //throw $th;

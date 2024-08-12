@@ -5,21 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class Subdistrict extends Model
 {
     use HasFactory;
-    protected $table = 'cities';
+
+    protected $table = 'kecamatans';
     protected $guarded = [];
-    public function userAlamat()
+    public function kota()
     {
-        return $this->hasMany(UserAlamat::class,  "kota_id");
+        return $this->belongsTo(City::class,  "city_id");
     }
     public function provinsi()
     {
         return $this->belongsTo(Province::class,  "province_id");
-    }
-    public function kecamatan()
-    {
-        return $this->belongsTo(Subdistrict::class,  "city_id");
     }
 }

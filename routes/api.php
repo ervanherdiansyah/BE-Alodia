@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\CourierController;
 use App\Http\Controllers\Api\GambarBannerController;
 use App\Http\Controllers\Api\GambarInformasiBannerController;
 use App\Http\Controllers\Api\InfoBonusController;
+use App\Http\Controllers\Api\KecamatanController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PaketController;
 use App\Http\Controllers\Api\PilihanPencairanController;
@@ -65,7 +66,7 @@ Route::group([
         Route::get('/get-sumorder-onafiliasi', [OrderController::class, 'getSumOrderOnAfiliasiByUser']);
         Route::get('/get-sumorder-allafliasi', [OrderController::class, 'getSumAOrderOnAfiliasiAllUser']);
         Route::get('/get-userorders', [OrderController::class, 'getOrderByUserID2']);
-        
+
         //Get Info Target Progress
         Route::get('/get-info-progress-target', [OrderController::class, 'getSumAOrderOnAfiliasiAllUser']);
 
@@ -115,7 +116,7 @@ Route::group([
 
         //Change Password
         Route::post('/update-password', [UserDetailController::class, 'updatepassword']);
-        
+
         //Confirmation Password
         Route::post('/confirmation-password', [UserDetailController::class, 'confirmationpassword']);
 
@@ -132,18 +133,18 @@ Route::group([
         Route::get('/user-pointwithdrawhistory', [PointWithdrawController::class, 'getWithdrawPointByUser']);
         // Buat Permintaan Pencairan Balance Yang Baru untuk User
         Route::post('/user-withdrawpoint/new', [PointWithdrawController::class, 'createPointWithdrawRequest']);
-        
+
         // HISTORI BALANCE DAN POIN
-        Route::get('/user-komisi-history',[UserKomisiHistoryController::class, 'getKomisiHistory']);
+        Route::get('/user-komisi-history', [UserKomisiHistoryController::class, 'getKomisiHistory']);
         Route::get('/user-poin-history', [UserPoinHistoryController::class, 'getPointHistory']);
         Route::get('/user-komisi-data', [UserKomisiHistoryController::class, 'getKomisiData']);
 
         // Get Wallet Information
         Route::get('/user-wallet', [UserWalletController::class, 'getUserWallet']);
-        
+
         // GET User Notification
         Route::get('/user-notification', [NotificationController::class, 'getUserNotification']);
-        
+
         // CREATE NOTIFICATION
         Route::post('/notification-create', [NotificationController::class, 'createNotification']);
     });
@@ -204,6 +205,10 @@ Route::post('/callback', [CheckoutContoller::class, 'callback']);
 Route::get('/cities', [CitiesController::class, 'getAllCities']);
 Route::get('/cities/by-id/{id}', [CitiesController::class, 'getCitiesById']);
 Route::get('/cities/by-province-id/{provinsi_id}', [CitiesController::class, 'getcitiesByIdProvinsi']);
+
+// Get Kecamatan
+Route::get('/kecamatan-by-kota/{city_id}', [KecamatanController::class, 'getKecamatanByKota']);
+
 
 //Get Courier
 Route::get('/courier', [CourierController::class, 'getAllCourier']);
@@ -267,3 +272,7 @@ Route::get('/get-paket-no-authentication', [PaketController::class, 'getPaket'])
 // Route::post('/user-detail/create', [UserDetailController::class, 'createUserDetail']);
 // Route::post('/user-detail/update/{id}', [UserDetailController::class, 'updateUserDetailAdmin']);
 // Route::delete('/user-detail/delete/{id}', [UserDetailController::class, 'deleteUserDetail']);
+
+Route::get('/get-kota', [Controller::class, 'getCities']);
+Route::get('/get-provinsi', [Controller::class, 'getProvinces']);
+Route::get('/get-kecamatan', [Controller::class, 'getKecamatann']);

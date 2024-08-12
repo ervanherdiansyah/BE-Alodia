@@ -67,6 +67,7 @@ class OrderController extends Controller
                     'alamat_id' => $order->alamat_id,
                     'provinsi' => $order->userAlamat->provinsi->name,
                     'kota' => $order->userAlamat->kota->name,
+                    'kecamatan' => $order->userAlamat->kecamatan->name,
                     'alamat_pengambilan_paket_id' => $order->alamat_pengambilan_paket_id,
                     'provinsi_alamat_pengambilan' => $order->alamatPengiriman->provinsi->name,
                     'kota_alamat_pengambilan' => $order->alamatPengiriman->kota->name,

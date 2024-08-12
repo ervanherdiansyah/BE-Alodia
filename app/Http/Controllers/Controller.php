@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use App\Models\Province;
+use App\Models\Subdistrict;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -18,7 +19,8 @@ class Controller extends BaseController
         $apiKey = env('RAJAONGKIR_APIKEY');
         $response = Http::withHeaders([
             'key' => $apiKey,
-        ])->get('https://api.rajaongkir.com/starter/province');
+        ])->get('https://pro.rajaongkir.com/api/province');
+        // return response()->json($response);\\
 
         // Periksa apakah permintaan berhasil
         if ($response->successful()) {
@@ -29,13 +31,14 @@ class Controller extends BaseController
             if (isset($data['rajaongkir'], $data['rajaongkir']['results'])) {
                 // Ambil data provinsi dari hasil respons
                 $provinces = $data['rajaongkir']['results'];
+                return response()->json($provinces);
 
                 // Iterasi melalui setiap provinsi dan simpan ke dalam tabel provinces
-                foreach ($provinces as $province) {
-                    Province::create([
-                        'name'        => $province['province'],
-                    ]);
-                }
+                // foreach ($provinces as $province) {
+                //     Province::create([
+                //         'name'        => $province['province'],
+                //     ]);
+                // }
             } else {
                 // Tangani kesalahan jika respons tidak mengandung data yang diharapkan
                 // Misalnya, jika format respons tidak sesuai dengan yang diharapkan
@@ -52,8 +55,8 @@ class Controller extends BaseController
         $apiKey = env('RAJAONGKIR_APIKEY');
         $response = Http::withHeaders([
             'key' => $apiKey,
-        ])->get('https://api.rajaongkir.com/starter/city');
-
+        ])->get('https://pro.rajaongkir.com/api/city');
+        // return response()->json($response);
         // Periksa apakah permintaan berhasil
         if ($response->successful()) {
             // Mendapatkan data dari respons JSON
@@ -71,6 +74,7 @@ class Controller extends BaseController
                     City::create([
                         'province_id' => $province['province_id'],
                         'name'        => $province['city_name'],
+                        'type'        => $province['type'],
                     ]);
                 }
                 return response()->json(['message' => 'Successfully'], 200);
@@ -82,6 +86,57 @@ class Controller extends BaseController
         } else {
             // Tangani kesalahan jika permintaan gagal
             return response()->json(['error' => 'Failed to fetch cities'], $response->status());
+        }
+    }
+
+    public function getKecamatan()
+    {
+        set_time_limit(0); // Menghapus batas waktu eksekusi
+
+        try {
+            // Ambil semua kota
+            $response = Http::withHeaders([
+                'key' => env('RAJAONGKIR_APIKEY'),
+            ])->get('https://pro.rajaongkir.com/api/city');
+
+            if ($response->successful()) {
+                $cities = $response->json()['rajaongkir']['results'];
+
+                $chunks = array_chunk($cities, 10); // Membagi kota menjadi batch 10
+
+                foreach ($chunks as $chunk) {
+                    foreach ($chunk as $city) {
+                        // Ambil semua kecamatan untuk setiap kota
+                        $subdistrictResponse = Http::withHeaders([
+                            'key' => env('RAJAONGKIR_APIKEY'),
+                        ])->timeout(60) // Menambah timeout menjadi 60 detik
+                            ->retry(3, 2000) // Mencoba kembali hingga 3 kali dengan jeda 2 detik
+                            ->get('https://pro.rajaongkir.com/api/subdistrict', [
+                                'city' => $city['city_id'],
+                            ]);
+
+
+                        if ($subdistrictResponse->successful()) {
+                            $subdistricts = $subdistrictResponse->json()['rajaongkir']['results'];
+
+                            foreach ($subdistricts as $subdistrict) {
+                                Subdistrict::create([
+                                    'province_id'    => $subdistrict['province_id'],
+                                    'city_id'        => $subdistrict['city_id'],
+                                    'name'           => $subdistrict['subdistrict_name'],
+                                    'type'           => $subdistrict['type'],
+                                ]);
+                            }
+                        }
+                    }
+                }
+
+                return response()->json(['message' => 'Successfully fetched and saved all subdistricts'], 200);
+            } else {
+                return response()->json(['error' => 'Failed to fetch cities from API'], 500);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $th->getMessage()], 500);
         }
     }
 }
