@@ -206,12 +206,11 @@ class OrderController extends Controller
             $orders = Order::join('users', 'orders.user_id', '=', 'users.id')
                 ->join('user_details', 'users.id', '=', 'user_details.user_id')
                 ->where('user_details.referral_use', $referralCode->referral)
-                ->where('orders.status', 'paid')
+                ->where('orders.status', 'Paid')
                 ->select('orders.*', 'users.name as user_name', 'user_details.referral_use')
                 ->with('users.userDetail', 'orderDetail.product')
                 ->latest()
                 ->get();
-
 
             return response()->json(['data' => $orders, 'message' => 'success'], 200);
         } catch (\Throwable $th) {
