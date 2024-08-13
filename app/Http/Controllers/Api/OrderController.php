@@ -43,7 +43,6 @@ class OrderController extends Controller
     {
         try {
             $orders = Order::with('userAlamat', 'orderDetail.product', 'users', 'paket')->where('user_id', Auth::user()->id)->where('status', 'Paid')->latest()->paginate(10);
-            return response()->json(['data' => $orders, 'status' => 'Success'], 200);
 
             // Format ulang data pesanan
             $formattedOrders = $orders->map(function ($order) {
@@ -84,6 +83,7 @@ class OrderController extends Controller
                     'alamat_pengiriman_paket' => $order->alamatPengiriman,
                 ];
             });
+            return response()->json(['data' => $formattedOrders, 'status' => 'Success'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -206,10 +206,12 @@ class OrderController extends Controller
             $orders = Order::join('users', 'orders.user_id', '=', 'users.id')
                 ->join('user_details', 'users.id', '=', 'user_details.user_id')
                 ->where('user_details.referral_use', $referralCode->referral)
+                ->where('orders.status', 'paid')
                 ->select('orders.*', 'users.name as user_name', 'user_details.referral_use')
                 ->with('users.userDetail', 'orderDetail.product')
                 ->latest()
                 ->get();
+
 
             return response()->json(['data' => $orders, 'message' => 'success'], 200);
         } catch (\Throwable $th) {
