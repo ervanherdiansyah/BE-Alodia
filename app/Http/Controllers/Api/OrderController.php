@@ -42,8 +42,8 @@ class OrderController extends Controller
     public function getAllOrderByUser()
     {
         try {
-            $ordersa = Order::with('userAlamat', 'orderDetail.product', 'users', 'paket')->where('user_id', Auth::user()->id)->where('status', 'Paid')->latest()->paginate(10);
-            return response()->json(['data' => $ordersa, 'status' => 'Success'], 200);
+            $orders = Order::with('userAlamat', 'orderDetail.product', 'users', 'paket')->where('user_id', Auth::user()->id)->where('status', 'Paid')->latest()->paginate(10);
+            return response()->json(['data' => $orders, 'status' => 'Success'], 200);
 
             // Format ulang data pesanan
             $formattedOrders = $orders->map(function ($order) {
