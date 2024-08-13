@@ -46,9 +46,9 @@ class UserDetailController extends Controller
 
         try {
             //code...
-            $user_id = User::where('id', Auth::user()->id)->first();
-            $useReferralByUser = UserDetails::with('users')->where('referral_use', $user_id->referral)->latest()->get();
-            return response()->json(['data' => $user_id, 'message' => 'Success'], 200);
+            $user_idi = User::where('id', Auth::user()->id)->first();
+            $useReferralByUser = UserDetails::with('users')->where('referral_use', $user_idi->referral)->latest()->get();
+            return response()->json(['data' => $user_idi, 'message' => 'Success'], 200);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json(['message' => 'Internal Server Error'], 500);
