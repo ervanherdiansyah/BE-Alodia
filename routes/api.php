@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\UserKomisiHistoryController;
 use App\Http\Controllers\Api\UserPoinHistoryController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Authentication\ForgotPasswordController;
+use App\Models\UserDetails;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
@@ -83,6 +84,9 @@ Route::group([
         Route::post('/useralamat/create', [AlamatController::class, 'createAlamat']);
         Route::post('/useralamat/update/{id}', [AlamatController::class, 'updateAlamat']);
         Route::delete('/useralamat/delete/{id}', [AlamatController::class, 'deleteAlamat']);
+
+        // Update fcm token
+        Route::post('/update/fcm-token', [UserDetailController::class, 'updateFCMToken']);
 
         // User Bank Detail API
         Route::get('userbanks', [BankController::class, 'getBankByUserID']);

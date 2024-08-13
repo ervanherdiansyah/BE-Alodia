@@ -209,4 +209,19 @@ class UserDetailController extends Controller
     // }
     //
 
+    public function updateFCMToken(Request $request)
+    {
+        try {
+            //code...
+            $user =  User::where('id', Auth::user()->id)->first();
+            $user->update([
+                'fcm_token' =>  $request->fcm_token,
+            ]);
+
+            return response()->json(['message' => 'berhasil ubah fcm_token'], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json(['message' => $th->getMessage()], 500);
+        }
+    }
 }
