@@ -59,7 +59,7 @@ class AuthController extends Controller
 
             // $code = str_replace(' ', '', $request->name);
             // $randomNumber = rand(1000,9999);
-            
+
 
             $user = User::create([
                 'name' => $request->name,
@@ -105,12 +105,12 @@ class AuthController extends Controller
                 'alamat_lengkap' => $request->alamat_lengkap,
                 'provinsi_id' => $request->provinsi_id,
                 'kota_id' => $request->kota_id,
-                'kecamatan' => $request->kecamatan,
+                'kecamatan_id' => $request->kecamatan_id,
                 'kelurahan' => $request->kelurahan,
                 'kode_pos' => $request->kode_pos,
                 'alamat_utama' => 1,
                 'nama' => $request->name,
-                'no_wa' =>$request->nomor_wa,
+                'no_wa' => $request->nomor_wa,
             ]);
 
             $user_affiliate = User::where('referral', $request->referral_use)->first();
@@ -169,12 +169,11 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        try{
+        try {
             // auth()->logout();
             JWTAuth::invalidate(JWTAuth::getToken());
             return response()->json(['message' => 'Successfully logged out'], 200);
-        }
-        catch (TokenExpiredException $e) {
+        } catch (TokenExpiredException $e) {
             return response()->json(['message' => 'Token has expired'], 401);
         } catch (TokenInvalidException $e) {
             return response()->json(['message' => 'Token is invalid'], 401);
