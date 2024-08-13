@@ -47,7 +47,7 @@ class UserDetailController extends Controller
         try {
             //code...
             $user_id = User::where('id', Auth::user()->id)->first();
-            $useReferralByUser = UserDetails::latest()->get();
+            $useReferralByUser = UserDetails::with('users')->latest()->get();
             return response()->json(['data' => $useReferralByUser, 'message' => 'Success'], 200);
         } catch (\Throwable $th) {
             //throw $th;
