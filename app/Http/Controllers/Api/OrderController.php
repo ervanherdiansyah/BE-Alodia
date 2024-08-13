@@ -43,6 +43,7 @@ class OrderController extends Controller
     {
         try {
             $ordersa = Order::with('userAlamat', 'orderDetail.product', 'users', 'paket')->where('user_id', Auth::user()->id)->where('status', 'Paid')->latest()->paginate(10);
+            return response()->json(['data' => $ordersa, 'status' => 'Success'], 200);
 
             // Format ulang data pesanan
             $formattedOrders = $orders->map(function ($order) {
@@ -83,8 +84,6 @@ class OrderController extends Controller
                     'alamat_pengiriman_paket' => $order->alamatPengiriman,
                 ];
             });
-
-            return response()->json(['data' => $ordersa, 'status' => 'Success'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
