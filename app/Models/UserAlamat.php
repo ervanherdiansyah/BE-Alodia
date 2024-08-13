@@ -35,4 +35,8 @@ class UserAlamat extends Model
     {
         return $this->belongsTo(City::class,  "kota_id");
     }
+    public function kecamatan()
+    {
+        return $this->belongsTo(Subdistrict::class,  "kecamatan_id");
+    }
 }
