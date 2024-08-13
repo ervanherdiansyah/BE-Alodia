@@ -70,12 +70,8 @@ class UserDetailController extends Controller
         }
     }
 
-
-
     public function updateUserDetail(Request $request)
     {
-
-
         try {
             //code...
             DB::beginTransaction();
@@ -89,12 +85,9 @@ class UserDetailController extends Controller
                 'email' => 'required|string'
             ]);
 
-
             $user_id = Auth::user()->id;
             $user = User::where('id', $user_id)->first();
             $data = UserDetails::where('user_id', $user_id)->first();
-
-
 
             $file_name = null;
             if (Request()->hasFile('foto_profil') && Request()->file('foto_profil')->isValid()) {
@@ -120,14 +113,10 @@ class UserDetailController extends Controller
                 ]);
             }
 
-
-
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email
             ]);
-
-
 
             DB::commit();
             return response()->json(['data' => $data, 'message' => 'Success'], 200);
@@ -172,7 +161,7 @@ class UserDetailController extends Controller
                 'password' =>  bcrypt($request->password),
             ]);
 
-            return response()->json(['message' => 'berhasil ubah password'], 400);
+            return response()->json(['message' => 'berhasil ubah password'], 200);
             // if (Hash::check($request->current_password, auth()->user()->password)) {
             //     auth()->user()->update(['password' => Hash::make($request->password)]);
             //     return response()->json(['message' => 'Success Change Password'], 200);
