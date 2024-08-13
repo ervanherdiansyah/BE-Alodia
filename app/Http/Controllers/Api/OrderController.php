@@ -42,7 +42,7 @@ class OrderController extends Controller
     public function getAllOrderByUser()
     {
         try {
-            $orders = Order::with('userAlamat', 'orderDetail.product', 'users', 'paket')->where('user_id', Auth::user()->id)->where('status', 'Paid')->latest()->paginate(10);
+            $ordersa = Order::with('userAlamat', 'orderDetail.product', 'users', 'paket')->where('user_id', Auth::user()->id)->where('status', 'Paid')->latest()->paginate(10);
 
             // Format ulang data pesanan
             $formattedOrders = $orders->map(function ($order) {
@@ -84,7 +84,7 @@ class OrderController extends Controller
                 ];
             });
 
-            return response()->json(['data' => $orders, 'status' => 'Success'], 200);
+            return response()->json(['data' => $ordersa, 'status' => 'Success'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
