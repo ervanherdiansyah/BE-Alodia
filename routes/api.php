@@ -59,13 +59,13 @@ Route::group([
 
         //Order
         Route::get('/get-order', [OrderController::class, 'getOrderByUserIdOnOrder']);
-        Route::get('/get-order/by-user-id', [OrderController::class, 'getOrderByUserID']);
+        // Route::get('/get-order/by-user-id', [OrderController::class, 'getOrderByUserID']);
         Route::get('/get-allorder', [OrderController::class, 'getAllOrderByUser']);
         Route::post('/order', [OrderController::class, 'addToOrder']);
         Route::get('/get-order-byuseronafiliasi', [OrderController::class, 'getOrderByUserOnAfiliasi']);
         Route::get('/get-sumorder-onafiliasi', [OrderController::class, 'getSumOrderOnAfiliasiByUser']);
         Route::get('/get-sumorder-allafliasi', [OrderController::class, 'getSumAOrderOnAfiliasiAllUser']);
-        Route::get('/get-userorders', [OrderController::class, 'getOrderByUserID2']);
+        Route::get('/get-userorders', [OrderController::class, 'getOrderByUserID']);
 
         //Get Info Target Progress
         Route::get('/get-info-progress-target', [OrderController::class, 'getSumAOrderOnAfiliasiAllUser']);

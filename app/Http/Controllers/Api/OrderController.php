@@ -267,7 +267,7 @@ class OrderController extends Controller
         }
     }
 
-    public function getOrderByUserID2()
+    public function getOrderByUserID()
     {
         try {
             $user_id = Auth::user()->id;
