@@ -50,8 +50,6 @@ class ProductController extends Controller
                 $namaGambar = str_replace(' ', '_', $file_name);
                 $image = $request->image->storeAs('public/product', $namaGambar);
             }
-
-
             $product = Product::create([
                 'product_name' => $request->product_name,
                 'image' =>  $file_name ? "product/" . $namaGambar : null,
@@ -74,7 +72,6 @@ class ProductController extends Controller
                 'image' => 'nullable',
                 'stock' => 'required',
             ]);
-
             $product = Product::find($id);
             if (Request()->hasFile('gambar')) {
                 if (Storage::exists($product->image)) {
@@ -105,9 +102,7 @@ class ProductController extends Controller
     public function deleteProduct($id)
     {
         try {
-
             Product::where('id', $id)->first()->delete();
-
             return response()->json(['message' => 'Success'], 200);
         } catch (\Throwable $th) {
             //throw $th;

@@ -39,13 +39,8 @@ class RajaOngkirController extends Controller
                         'weight' => $userOrder->paket->weight,
                         'courier' => $kurir->code,
                     ]);
-
-                    // $shippingFees[] = json_decode($response->getBody(), true);
-                    // $shippingFees[$kurir->name] = $result['rajaongkir']['results'];
                     $result = json_decode($response->getBody(), true);
                     // return response()->json($result);
-
-
                     if (isset($result['rajaongkir']['results'][0])) {
                         $shippingFees[] = [
                             'code' => $result['rajaongkir']['results'][0]['code'],
