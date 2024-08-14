@@ -54,7 +54,6 @@ Route::group([
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
 
-
     //middleware member affliasi
     Route::middleware(['checkTokenExpiration', 'check.role:mitra'])->group(function () {
 
