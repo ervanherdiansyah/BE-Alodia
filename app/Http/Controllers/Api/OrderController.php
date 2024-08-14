@@ -210,7 +210,7 @@ class OrderController extends Controller
                 ->select('orders.*', 'users.name as user_name', 'user_details.referral_use')
                 ->with('users.userDetail', 'orderDetail.product')
                 ->latest()
-                ->get();
+                ->paginate(10);
 
             return response()->json(['data' => $orders, 'message' => 'success'], 200);
         } catch (\Throwable $th) {
@@ -233,7 +233,7 @@ class OrderController extends Controller
                 ->groupBy('orders.user_id')
                 ->with('users.userDetail')
                 ->orderBy('orders.created_at', 'desc')
-                ->get();
+                ->paginate(10);
 
             // ->latest()
 
@@ -256,7 +256,7 @@ class OrderController extends Controller
                 ->select('orders.user_id', DB::raw('SUM(orders.total_harga) as subtotal'))
                 ->groupBy('orders.user_id')
                 ->with('users.userDetail')
-                ->get();
+                ->paginate(10);
 
             $info = InfoBonus::first();
             $target = TargetBonus::first();
@@ -287,7 +287,7 @@ class OrderController extends Controller
             $user = User::where('id', $user_id)->first();
             // order diri sendiri
 
-            $user_orders = Order::where('user_id', $user_id)->where('status', 'Paid')->get();
+            $user_orders = Order::where('user_id', $user_id)->where('status', 'Paid')->paginate(10);
             $data_order_user = [];
             foreach ($user_orders as $order) {
                 $keterangan = [
@@ -315,7 +315,7 @@ class OrderController extends Controller
                 ->where('orders.status', 'Paid')
                 ->latest()
                 ->select('orders.*', 'users.name as user_name', 'pakets.paket_nama as paket_name')
-                ->get();
+                ->paginate(10);
 
             // return response()->json(['user_order' => $order_afiliasi], 200);
 
