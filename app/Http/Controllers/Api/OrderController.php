@@ -267,12 +267,12 @@ class OrderController extends Controller
         }
     }
 
-    public function getOrderByUserID()
+    public function getOrderByUserID2()
     {
         try {
             $user_id = Auth::user()->id;
             $user = User::where('id', $user_id)->first();
-            $user_orders = Order::where('user_id', $user_id)->get();
+            $user_orders = Order::where('user_id', $user_id)->where('status', 'Paid')->get();
             $data_order_user = [];
             foreach ($user_orders as $order) {
                 $keterangan = [
