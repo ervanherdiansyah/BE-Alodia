@@ -20,8 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // config(['app.locale' => 'id']);
-        // Carbon::setLocale('id');
+        config(['app.locale' => 'id']);
+        Carbon::setLocale('id');
         // date_default_timezone_set('Asia/Jakarta');
     }
 }
