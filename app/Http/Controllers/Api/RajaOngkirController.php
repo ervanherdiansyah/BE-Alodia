@@ -59,21 +59,6 @@ class RajaOngkirController extends Controller
                     return response()->json(['message' =>  $e->getMessage()], 500);
                 }
             }
-            //     $shippingFees = [];
-            //     try {
-            //         $response = Http::withHeaders([
-            //             'key' => env('RAJAONGKIR_APIKEY'),
-            //         ])->post(env('RAJAONGKIR_BASE_URL') . 'cost', [
-            //             'origin' => env('RAJAONGKIR_ORIGIN'),
-            //             'destination' => $userAlamat->kota_id,
-            //             'weight' => $userOrder->paket->weight,
-            //             'courier' => $request->code_courier,
-            //         ]);
-
-            //         $shippingFees = json_decode($response->getBody(), true);
-            //     } catch (\Exception $e) {
-            //         return response()->json(['message' => 'Internal Server Error'], 500);
-            //     }
             return response()->json(['data' => $shippingFees, 'status' => 'Success'], 200);
         } catch (\Throwable $th) {
             //throw $th;
