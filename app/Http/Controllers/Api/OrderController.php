@@ -9,7 +9,6 @@ use App\Models\OrderDetail;
 use App\Models\Paket;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
 use App\Models\TargetBonus;
 use Illuminate\Support\Facades\Auth;
