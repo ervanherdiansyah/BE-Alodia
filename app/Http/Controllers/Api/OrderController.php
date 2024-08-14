@@ -287,7 +287,7 @@ class OrderController extends Controller
             $user = User::where('id', $user_id)->first();
             // order diri sendiri
 
-            $user_orders = Order::where('user_id', $user_id)->where('status', 'Paid')->get();
+            $user_orders = Order::where('user_id', $user_id)->get();
             $data_order_user = [];
             foreach ($user_orders as $order) {
                 $keterangan = [
