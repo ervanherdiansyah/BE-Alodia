@@ -210,7 +210,7 @@ class OrderController extends Controller
                 ->select('orders.*', 'users.name as user_name', 'user_details.referral_use')
                 ->with('users.userDetail', 'orderDetail.product')
                 ->latest()
-                ->paginate(10);
+                ->get();
 
             return response()->json(['data' => $orders, 'message' => 'success'], 200);
         } catch (\Throwable $th) {
@@ -233,7 +233,7 @@ class OrderController extends Controller
                 ->groupBy('orders.user_id')
                 ->with('users.userDetail')
                 ->orderBy('orders.created_at', 'desc')
-                ->paginate(10);
+                ->get();
 
             // ->latest()
 
@@ -256,7 +256,7 @@ class OrderController extends Controller
                 ->select('orders.user_id', DB::raw('SUM(orders.total_harga) as subtotal'))
                 ->groupBy('orders.user_id')
                 ->with('users.userDetail')
-                ->paginate(10);
+                ->get();
 
             $info = InfoBonus::first();
             $target = TargetBonus::first();
