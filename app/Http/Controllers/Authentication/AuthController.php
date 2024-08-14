@@ -56,11 +56,6 @@ class AuthController extends Controller
                 'email' => 'required|unique:users',
             ]);
 
-
-            // $code = str_replace(' ', '', $request->name);
-            // $randomNumber = rand(1000,9999);
-
-
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -68,8 +63,6 @@ class AuthController extends Controller
                 'role' => "mitra",
                 'first_order' => 1,
                 'first_buy_success' => 0,
-
-                // 'referral ' => $randomNumber . $code
             ]);
 
             $UserDetails = UserDetails::create([
@@ -97,7 +90,6 @@ class AuthController extends Controller
                 'no_rekening' => $request->no_rekening,
                 'nama_bank' => $request->nama_bank,
                 'rekening_utama' => 1
-
             ]);
 
             $alamat = UserAlamat::create([

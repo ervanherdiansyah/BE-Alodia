@@ -284,8 +284,6 @@ class OrderController extends Controller
         try {
             $user_id = Auth::user()->id;
             $user = User::where('id', $user_id)->first();
-            // order diri sendiri
-
             $user_orders = Order::where('user_id', $user_id)->where('status', 'Paid')->get();
             $data_order_user = [];
             foreach ($user_orders as $order) {
@@ -298,15 +296,6 @@ class OrderController extends Controller
                 $data_order_user[] = $keterangan;
             }
 
-            // order afiliasi
-            // JOIN table user dengan table order
-            // $order_afiliasi = Order::join('users', 'orders.user_id','=', 'users.id')
-            // ->join('user_details', 'users.id', '=', 'user_details.user_id')
-            // ->join('pakets', 'orders.paket_id', '=', 'pakets.id')
-            // ->where('user_details.referral_use', $user->referral)
-            // ->where('orders.status', 'Paid')
-            // ->get();
-
             $order_afiliasi = Order::join('users', 'orders.user_id', '=', 'users.id')
                 ->join('user_details', 'users.id', '=', 'user_details.user_id')
                 ->join('pakets', 'orders.paket_id', '=', 'pakets.id')
@@ -315,8 +304,6 @@ class OrderController extends Controller
                 ->latest()
                 ->select('orders.*', 'users.name as user_name', 'pakets.paket_nama as paket_name')
                 ->get();
-
-            // return response()->json(['user_order' => $order_afiliasi], 200);
 
             $data_order_afiliasi = [];
             foreach ($order_afiliasi as $order) {

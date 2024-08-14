@@ -14,7 +14,6 @@ class UserWalletController extends Controller
     {
         // user harus login
         $user_id = Auth::user()->id;
-        // ambil permintaan withdraw balance yang pernah user
         try {
             $user_wallet_information = UserWallet::where('user_id', $user_id)->first();
             return response()->json(['data' => $user_wallet_information, 'message' => 'Success'], 200);
