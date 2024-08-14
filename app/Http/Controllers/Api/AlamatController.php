@@ -42,7 +42,6 @@ class AlamatController extends Controller
             return response()->json(['message' => 'Internal Server Error'], 500);
         }
     }
-
     public function getAlamatPenjual()
     {
         try {
@@ -53,7 +52,6 @@ class AlamatController extends Controller
             return response()->json(['message' => 'Internal Server Error'], 500);
         }
     }
-
     public function createAlamat(Request $request)
     {
         try {
