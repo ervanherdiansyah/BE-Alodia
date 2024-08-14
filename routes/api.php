@@ -71,7 +71,6 @@ Route::group([
         //Get Info Target Progress
         Route::get('/get-info-progress-target', [OrderController::class, 'getSumAOrderOnAfiliasiAllUser']);
 
-
         //Ongkir
         Route::post('/rajaongkir', [RajaOngkirController::class, 'getOngkir']);
 
@@ -117,14 +116,11 @@ Route::group([
         Route::get('/use-referral/byuser', [UserDetailController::class, 'getUseReferralByUser']);
         Route::get('/count-use-referral/byuser', [UserDetailController::class, 'getCountUseReferralByUser']);
 
-
         //Change Password
         Route::post('/update-password', [UserDetailController::class, 'updatepassword']);
 
         //Confirmation Password
         Route::post('/confirmation-password', [UserDetailController::class, 'confirmationpassword']);
-
-
 
         // Pencairan Balance
         // Ambil Seluruh Permintaan Pencairan Balance Yang Pernah user lakukan
