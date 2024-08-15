@@ -85,7 +85,7 @@ class CheckoutContoller extends Controller
                 \Midtrans\Config::$is3ds = true;
 
                 // \Midtrans\Config::$overrideNotifUrl = config('app.url') . '/api/callback';
-                \Midtrans\Config::$overrideNotifUrl = 'https://backend.fastnetwork.id/api/callback';
+                \Midtrans\Config::$overrideNotifUrl = 'https://backend.alodia.site/api/callback';
 
                 $order_id = $orders->id;
                 $random_string = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
@@ -163,7 +163,7 @@ class CheckoutContoller extends Controller
                 \Midtrans\Config::$is3ds = true;
 
                 // \Midtrans\Config::$overrideNotifUrl = config('app.url') . '/api/callback';
-                \Midtrans\Config::$overrideNotifUrl = 'https://backend.fastnetwork.id/api/callback';
+                \Midtrans\Config::$overrideNotifUrl = 'https://backend.alodia.site/api/callback';
 
                 // Check transaction status
                 // $status = \Midtrans\Transaction::status($orders->id);
