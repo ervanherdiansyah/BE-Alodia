@@ -265,11 +265,11 @@ class CheckoutContoller extends Controller
                     $affliator = UserWallet::where('user_id', $userReferal->id)->first();
 
                     // IF Transaksi Pertama = Paid generate kode referal
-                    $user_name_character = str_split($user->name);
-                    $first_user_character_name = $user_name_character[0];
-                    $user_id_as_string = (string)$user->id;
+                    // $user_name_character = str_split($user->name);
+                    // $first_user_character_name = $user_name_character[0];
+                    // $user_id_as_string = (string)$user->id;
                     $random_string = Str::random(6);
-                    $referal_token = $first_user_character_name . $user_id_as_string . $random_string;
+                    $referal_token = $random_string;
 
                     $user->update([
                         'referral' => $referal_token
