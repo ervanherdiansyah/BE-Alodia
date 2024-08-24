@@ -294,7 +294,6 @@ class CheckoutContoller extends Controller
                         'jumlah_poin' => 15
                     ]);
 
-
                     $affliator->total_balance += 300000;
                     $affliator->current_balance += 300000;
                     $affliator->save();
@@ -357,15 +356,51 @@ class CheckoutContoller extends Controller
                     $affliasi->save();
                 }
 
-                $totalHargaPerEnamBulan = OrderTotalHargaPerEnamBulan::where('user_id', $userReferal->id)->first();
+                // Ambil total harga per enam bulan untuk user referral
+                $totalHargaPerEnamBulan = OrderTotalHargaPerEnamBulan::where('user_id', $user->id)->first();
+                $currentDate = now();
+                $bonusThreshold = 100000000; // 100 juta
+                $bonusAmount = 2000000; // 2 juta
+
                 if ($totalHargaPerEnamBulan) {
-                    $totalHargaPerEnamBulan->update([
-                        'total_harga' => $totalHargaPerEnamBulan->total_harga + $order->total_belanja,
-                    ]);
+                    // Hitung selisih bulan dari tanggal awal
+                    $monthsPassed = $currentDate->diffInMonths($totalHargaPerEnamBulan->tanggal_awal);
+
+                    // Cek jika sudah lebih dari 6 bulan
+                    if ($monthsPassed > 6) {
+                        // Reset total harga jika lebih dari 6 bulan
+                        $totalHargaPerEnamBulan->total_harga = 0;
+                        $totalHargaPerEnamBulan->tanggal_awal = $currentDate;
+                    } else {
+                        // Jika total harga mencapai atau melebihi threshold, tambahkan bonus dan reset total harga
+                        if ($totalHargaPerEnamBulan->total_harga + $order->total_belanja >= $bonusThreshold) {
+                            $affliator = UserWallet::where('user_id', $user->id)->first();
+                            $affliator->total_balance += $bonusAmount;
+                            $affliator->current_balance += $bonusAmount;
+                            $komisi_history = UserKomisiHistory::create([
+                                'affiliator_id' => $user->id,
+                                'affiliate_id' => $user->id,
+                                'keterangan' => 'Bonus',
+                                'order_id' => $order->id,
+                                'info_transaksi' => 'Komisi Bonus',
+                                'jumlah_komisi' => $bonusAmount,
+                            ]);
+                            $totalHargaPerEnamBulan->total_harga = 0;
+                            $totalHargaPerEnamBulan->tanggal_awal = $currentDate; // Update tanggal_awal
+                        } else {
+                            $totalHargaPerEnamBulan->total_harga += $order->total_belanja;
+                        }
+                    }
+
+                    // Simpan perubahan
+                    $affliator->save();
+                    $totalHargaPerEnamBulan->save();
                 } else {
+                    // Jika tidak ada record, buat baru dengan total harga dari order
                     $totalHargaPerEnamBulan = OrderTotalHargaPerEnamBulan::create([
-                        'user_id' => $userReferal->id,
-                        'total_harga' => $order->total_belanja
+                        'user_id' => $user->id,
+                        'total_harga' => $order->total_belanja,
+                        'tanggal_awal' => $currentDate, // Set tanggal_awal ke tanggal saat ini
                     ]);
                 }
             }
