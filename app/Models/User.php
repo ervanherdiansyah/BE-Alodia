@@ -27,6 +27,8 @@ class User extends Authenticatable implements JWTSubject
         'first_buy_success',
         'first_order',
         'fcm_token',
+        'delete_token',
+        'delete_token_expires',
     ];
 
     /**

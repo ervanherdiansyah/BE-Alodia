@@ -10,10 +10,48 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DeleteAccountMail;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
+
+    public function index()
+    {
+        return view('account-delete');
+    }
+    public function requestDelete(Request $request)
+    {
+        $request->validate(['email' => 'required|email|exists:users,email']);
+
+        $user = User::where('email', $request->email)->first();
+        $token = Str::random(60);
+        $user->delete_token = hash('sha256', $token);
+        $user->delete_token_expires = now()->addMinutes(30);
+        $user->save();
+
+        Mail::to($user->email)->send(new DeleteAccountMail($token));
+        toast('We have emailed your account deletion link!', 'success');
+        return back()->with('status', 'We have emailed your account deletion link!');
+    }
+
+    public function verifyDelete($token)
+    {
+        $user = User::where('delete_token', hash('sha256', $token))
+            ->where('delete_token_expires', '>', now())
+            ->firstOrFail();
+
+        // Delete user account
+        $user->delete();
+        toast('Delete Account Success!!!', 'success');
+
+        return redirect('/account/delete')->with('status', 'Your account has been deleted.');
+    }
+
     public function getProvinces()
     {
         $apiKey = env('RAJAONGKIR_APIKEY');
