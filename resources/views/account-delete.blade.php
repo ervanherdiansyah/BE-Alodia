@@ -106,8 +106,7 @@
                                         termasuk pengaturan, riwayat aktivitas, dan konten yang diunggah. Pastikan Anda
                                         sudah mencadangkan data penting sebelum memulai proses penghapusan.</p>
                                     <p class="font-weight-bolder">Jika Anda mengalami masalah atau memiliki pertanyaan,
-                                        jangan ragu untuk menghubungi tim dukungan kami di [email dukungan] atau
-                                        kunjungi [halaman dukungan].</p>
+                                        jangan ragu untuk menghubungi tim dukungan kami di alodia.apps@gmail.com.</p>
                                     <p class="font-weight-bolder">Terima kasih telah menggunakan layanan kami.</p>
                                 </div>
                             </div>
