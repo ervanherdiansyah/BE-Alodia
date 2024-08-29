@@ -24,24 +24,42 @@ class Controller extends BaseController
     {
         return view('account-delete');
     }
+
     public function requestDelete(Request $request)
     {
-        $request->validate(['email' => 'required|email|exists:users,email']);
+        try {
+            //code...
+            $request->validate(['email' => 'required|email|exists:users,email']);
 
-        $user = User::where('email', $request->email)->first();
-        $token = Str::random(60);
-        $user->delete_token = hash('sha256', $token);
-        $user->delete_token_expires = now()->addMinutes(30);
-        $user->save();
+            $user = User::where('email', $request->email)->first();
+            $token = Str::random(60);
+            $user->delete_token = $token;
+            $user->delete_token_expires = now()->addMinutes(30);
+            $user->save();
 
-        Mail::to($user->email)->send(new DeleteAccountMail($token));
-        toast('We have emailed your account deletion link!', 'success');
-        return back()->with('status', 'We have emailed your account deletion link!');
+            Mail::to($user->email)->send(new DeleteAccountMail($token));
+            toast('We have emailed your account deletion link!', 'success');
+            return back();
+        } catch (\Throwable $th) {
+            //throw $th;
+            toast($th->getMessage(), 'warning');
+            return back();
+        }
     }
 
-    public function verifyDelete($token)
+    public function confirmDelete($token)
     {
-        $user = User::where('delete_token', hash('sha256', $token))
+        $user = User::where('delete_token', $token)->first();
+
+        if (!$user) {
+            toast('Token tidak valid atau telah kedaluwarsa.!', 'warning');
+        }
+
+        return view('account-confirm-delete', ['user' => $user]);
+    }
+    public function verifyDelete(Request $request)
+    {
+        $user = User::where('delete_token', $request->token)
             ->where('delete_token_expires', '>', now())
             ->firstOrFail();
 
@@ -49,7 +67,7 @@ class Controller extends BaseController
         $user->delete();
         toast('Delete Account Success!!!', 'success');
 
-        return redirect('/account/delete')->with('status', 'Your account has been deleted.');
+        return redirect('/account-delete');
     }
 
     public function getProvinces()

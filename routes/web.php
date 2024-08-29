@@ -25,6 +25,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/account/delete', [Controller::class, 'index']);
+Route::get('/account-delete', [Controller::class, 'index']);
+Route::get('/confirmation/account/delete/{token}', [Controller::class, 'confirmDelete'])->name('account.delete.confirm');
 Route::post('/account/delete-request', [Controller::class, 'requestDelete'])->name('account.delete.request');
-Route::get('/account/delete/{token}', [Controller::class, 'verifyDelete'])->name('account.delete.verify');
+Route::delete('/account/delete', [Controller::class, 'verifyDelete'])->name('account.delete.verify');
