@@ -73,7 +73,7 @@ class ProductController extends Controller
                 'stock' => 'required',
             ]);
             $product = Product::find($id);
-            if (Request()->hasFile('gambar')) {
+            if (Request()->hasFile('image')) {
                 if (Storage::exists($product->image)) {
                     Storage::delete($product->image);
                 }

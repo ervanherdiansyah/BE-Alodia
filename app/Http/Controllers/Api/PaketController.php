@@ -23,11 +23,11 @@ class PaketController extends Controller
             return response()->json(['data' => $paketDetail, 'message' => 'Success'], 200);
         } catch (\Throwable $th) {
             //throw $th;
-            
+
             return response()->json(['message' => 'Internal Server Error'], 500);
         }
     }
-    
+
     public function getFilterPaket(Request $request)
     {
         try {
@@ -42,7 +42,7 @@ class PaketController extends Controller
             // if ($user) {
             //     $userAuth = User::where('id', Auth::user()->id)->first();
             //     if ($userAuth->first_buy_success == true) {
-                    
+
             //     } elseif ($userAuth->first_buy_success == false) {
             //         $paketDetail = Paket::where('is_visible', true)->first();
             //         return response()->json(['data' => $paketDetail, 'message' => 'Success'], 200);
@@ -86,7 +86,7 @@ class PaketController extends Controller
             ]);
 
             $file_name = null;
-            if($request->hasFile('image')){
+            if ($request->hasFile('image')) {
                 $file_name = $request->image->getClientOriginalName();
                 $namaGambar = str_replace(' ', '_', $file_name);
                 $image = $request->image->storeAs('public/paket', $namaGambar);
@@ -98,7 +98,7 @@ class PaketController extends Controller
                 'price' => $request->price,
                 'weight' => $request->weight,
                 'description' => $request->description,
-                'image' => $file_name?"paket/".$namaGambar : null,
+                'image' => $file_name ? "paket/" . $namaGambar : null,
                 'point' => $request->point,
                 'paket_kode' => $request->paket_kode,
                 'value' => $request->value
@@ -128,7 +128,7 @@ class PaketController extends Controller
             ]);
 
             $data = Paket::find($id);
-            if (Request()->hasFile('gambar')) {
+            if (Request()->hasFile('image')) {
                 if (Storage::exists($data->image)) {
                     Storage::delete($data->image);
                 }
@@ -178,9 +178,10 @@ class PaketController extends Controller
             return response()->json(['message' => 'Internal Server Error'], 500);
         }
     }
-    
+
     // SET DISKON
-    public function setDiscount (Request $request, $id){
+    public function setDiscount(Request $request, $id)
+    {
         Request()->validate([
             'discount_price' => 'required|integer',
             'is_discount' => 'required|integer'
@@ -188,7 +189,7 @@ class PaketController extends Controller
 
         $paket = Paket::where('id', $id)->first();
         $paket->update([
-            'discount_price'=>$request->discount_price,
+            'discount_price' => $request->discount_price,
             'is_discount' => $request->is_discount
         ]);
     }
