@@ -55,7 +55,7 @@ Route::group([
     Route::post('me', [AuthController::class, 'me']);
 
     //middleware member affliasi
-    Route::middleware(['checkTokenExpiration', 'check.role:mitra'])->group(function () {
+    Route::middleware(['checkTokenExpiration', 'check.role:mitra,admin'])->group(function () {
 
         //Order
         Route::get('/get-order', [OrderController::class, 'getOrderByUserIdOnOrder']);

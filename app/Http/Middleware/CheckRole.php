@@ -14,11 +14,12 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ...$roles)
     {
         $user = JWTAuth::parseToken()->authenticate();
 
-        if ($user->role !== $role) {
+        // Cek apakah role user ada di dalam array role yang diperbolehkan
+        if (!in_array($user->role, $roles)) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
